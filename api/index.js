@@ -34,7 +34,12 @@ app.post('/api/show-all-expense',(req,res) =>{
             console.log(err);
 
         }else {
-            console.log("all expenses should be shown")
+            console.log(result)
+            const expense = result[0].map(expenses => ({
+                name : expenses.expense_name,
+                amount : expenses.expense_amount
+            }));
+            res.send(expense)
         }
     })
 })

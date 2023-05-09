@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 
 function HomePage () {
+
 const [newExpense, setNewExpense] = useState('');
 const [newAmount, setNewAmount] = useState('');
 
@@ -13,7 +14,7 @@ const addExpenses = (expenseName, expenseAmount) => {
      */
         axios.post('/api/add-expense',{expense_name : expenseName, expense_amount : expenseAmount})
             .then(response => {
-                setExpenses(response.data);
+              //  setExpenses(response.data);
 
             })
             .catch(error => {
@@ -41,7 +42,7 @@ const addExpenses = (expenseName, expenseAmount) => {
                         <Form.Control name= "expense_name" placeholder="expense name"  value={newExpense} onChange={(event) => setNewExpense(event.target.value) }></Form.Control>
                     </Form.Group>
                      <Form.Group>
-                      <Form.Label style={{"paddingRight": "800px"}}>Enter Expense</Form.Label>
+                      <Form.Label style={{"paddingRight": "800px"}}>Enter amount</Form.Label>
                         <Form.Control name= "expense_amount" placeholder="expense amount"  value={newAmount} onChange={(event) => setNewAmount(event.target.value)}></Form.Control>
                      </Form.Group>
             <Button style={{"marginTop": "10px"}} onClick={() => addExpenses(newExpense,newAmount)}>Add Expense</Button>
