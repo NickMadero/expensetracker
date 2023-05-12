@@ -4,6 +4,8 @@ const cors = require('cors');
 const path = require('path')
 const dbcontroller = require('./dbController')
 const {storeExpense} = require('./addExpenses')
+const {UpdateExpenseName} = require('./updateExpenseName')
+const {UpdateExpenseAmount} = require("./updateExpenseAmount");
 // initialize the Express app
 const app = express();
 
@@ -19,11 +21,37 @@ app.post('/api/add-expense',async (req,res) =>{
     const { expense_name, expense_amount } = req.body;
     try {
         const result = await storeExpense(expense_name,expense_amount);
-        res.status(200).json({ success: true, message: 'Appointment stored successfully', data: result });
+        res.status(200).json({ success: true, message: 'expense stored successfully', data: result });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ success: false, message: 'Error storing appointment' });
+        res.status(500).json({ success: false, message: 'Error storing expense' });
     }
+})
+
+app.post('/api/update-Expense-Name', async (req,res) =>{
+    const { expense_id , expense_name} = req.body;
+
+    try {
+        const  result = await UpdateExpenseName(expense_id,expense_name);
+        res.status(200).json({ success: true, message: 'expense name updated successfully', data: result });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ success: false, message: 'Error updating expense name' });
+    }
+
+})
+
+app.post('/api/update-Expense-amount', async (req,res) =>{
+    const { expense_id , expense_amount} = req.body;
+
+    try {
+        const  result = await UpdateExpenseAmount(expense_id,expense_amount);
+        res.status(200).json({ success: true, message: 'expense amount updated successfully', data: result });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ success: false, message: 'Error updating expense amount' });
+    }
+
 })
 
 // this endpoint will just call the stored procedure directly
@@ -36,6 +64,7 @@ app.post('/api/show-all-expense',(req,res) =>{
         }else {
             console.log(result)
             const expense = result[0].map(expenses => ({
+                expenseID : expenses.expense_id,
                 name : expenses.expense_name,
                 amount : expenses.expense_amount
             }));
