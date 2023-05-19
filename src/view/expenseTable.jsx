@@ -57,6 +57,7 @@ const handleChangeAmount = (expense) => {
         window.location.reload();
     }
 
+
     return (
         <div>
         <Table>
@@ -64,17 +65,18 @@ const handleChangeAmount = (expense) => {
             <tr>
                 <th>Expense Name</th>
                 <th>Expense Amount $$</th>
+                <th>category type</th>
             </tr>
             </thead>
             <tbody>
 
                 {Expenses.map((expense) => (
                     <tr key={expense.id}>
-                    <td>{expense.name}<Button style={{display:"flex", bottom:"30px",
-                        marginRight:"400px", marginLeft:"auto"}} onClick={() => handleChangeName(expense)}>change name</Button></td>
-                    <td>{expense.amount}<Button style={{display:"flex",
-                    marginRight:"400px", marginLeft:"auto"}} onClick={() => handleChangeAmount(expense)}>change amount</Button></td>
-
+                    <td>{expense.name}{/*<Button style={{display:"flex", bottom:"30px",
+                        marginRight:"400px", marginLeft:"auto"}} onClick={() => handleChangeName(expense)}>change name</Button>*/}</td>
+                    <td>{expense.amount}{/*<Button style={{display:"flex",
+                    marginRight:"400px", marginLeft:"auto"}} onClick={() => handleChangeAmount(expense)}>change amount</Button>*/}</td>
+                    <td>{expense.categoryType}</td>
                     </tr>
                     ))}
 

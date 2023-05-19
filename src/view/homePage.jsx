@@ -7,6 +7,7 @@ function HomePage () {
 
 const [newExpense, setNewExpense] = useState('');
 const [newAmount, setNewAmount] = useState('');
+const [newCategory_type,setnewCategory_type] = useState('');
 
 const addExpenses = (expenseName, expenseAmount) => {
     /**
@@ -41,11 +42,18 @@ const addExpenses = (expenseName, expenseAmount) => {
                         <Form.Label style={{"paddingRight": "800px"}}>Enter Expense</Form.Label>
                         <Form.Control name= "expense_name" placeholder="expense name"  value={newExpense} onChange={(event) => setNewExpense(event.target.value) }></Form.Control>
                     </Form.Group>
+
                      <Form.Group>
                       <Form.Label style={{"paddingRight": "800px"}}>Enter amount</Form.Label>
                         <Form.Control name= "expense_amount" placeholder="expense amount"  value={newAmount} onChange={(event) => setNewAmount(event.target.value)}></Form.Control>
                      </Form.Group>
-            <Button style={{"marginTop": "10px"}} onClick={() => addExpenses(newExpense,newAmount)}>Add Expense</Button>
+
+            <Form.Group>
+                <Form.Label style={{"paddingRight": "760px"}}>Enter category type</Form.Label>
+                <Form.Control name= "category type" placeholder="food or clothes"  value={newCategory_type} onChange={(event) => setnewCategory_type(event.target.value)}></Form.Control>
+            </Form.Group>
+
+            <Button style={{"marginTop": "10px"}} onClick={() => addExpenses(newExpense,newAmount,newCategory_type)}>Add Expense</Button>
         </Form>
 
         </div>

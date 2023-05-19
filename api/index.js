@@ -18,9 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // add a new expense to the database.
 app.post('/api/add-expense',async (req,res) =>{
-    const { expense_name, expense_amount } = req.body;
+    const { expense_name, expense_amount, category_type } = req.body;
     try {
-        const result = await storeExpense(expense_name,expense_amount);
+        const result = await storeExpense(expense_name,expense_amount , category_type);
         res.status(200).json({ success: true, message: 'expense stored successfully', data: result });
     } catch (error) {
         console.error('Error:', error);
@@ -66,7 +66,8 @@ app.post('/api/show-all-expense',(req,res) =>{
             const expense = result[0].map(expenses => ({
                 expenseID : expenses.expense_id,
                 name : expenses.expense_name,
-                amount : expenses.expense_amount
+                amount : expenses.expense_amount,
+                categoryType: expenses.category_type
             }));
             res.send(expense)
         }

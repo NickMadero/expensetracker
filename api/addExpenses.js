@@ -6,11 +6,11 @@ const dbcontroller = require("../api/dbcontroller")
  * @param expenseAmount
  * @returns {Promise<unknown>}
  */
-async function storeExpense (expenseName, expenseAmount) {
-    const addExpense = "call add_expense(?,?)";
+async function storeExpense (expenseName, expenseAmount,categoryType) {
+    const addExpense = "call add_expense(?,?,?)";
     return new Promise((resolve, reject) => {
         dbcontroller.query(addExpense,
-            [expenseName,expenseAmount], (err, result) => {
+            [expenseName,expenseAmount,categoryType], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
