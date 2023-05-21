@@ -6,6 +6,7 @@ const dbcontroller = require('./dbController')
 const {storeExpense} = require('./addExpenses')
 const {UpdateExpenseName} = require('./updateExpenseName')
 const {UpdateExpenseAmount} = require("./updateExpenseAmount");
+const {DeleteExpense} = require("./deleteExpenses")
 // initialize the Express app
 const app = express();
 
@@ -67,11 +68,26 @@ app.post('/api/show-all-expense',(req,res) =>{
                 expenseID : expenses.expense_id,
                 name : expenses.expense_name,
                 amount : expenses.expense_amount,
-                categoryType: expenses.category_type
+                categoryType: expenses.category_type,
+                categoryID : expenses.category_id
+
             }));
             res.send(expense)
         }
     })
 })
+
+app.post('/api/delete-expense',(req,res) =>{
+    const { category_id} = req.body;
+
+    try{
+      DeleteExpense(category_id);
+
+    }
+    catch (error){
+        console.log("error in the backend")
+    }
+})
+
 // add a port to expose the API when the server is running
 app.listen('3002', () => { })

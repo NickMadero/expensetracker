@@ -9,11 +9,11 @@ const [newExpense, setNewExpense] = useState('');
 const [newAmount, setNewAmount] = useState('');
 const [newCategory_type,setnewCategory_type] = useState('');
 
-const addExpenses = (expenseName, expenseAmount) => {
+const addExpenses = (expenseName, expenseAmount, categoryType) => {
     /**
      * todo create function that calls endpoint that will add an expense.
      */
-        axios.post('/api/add-expense',{expense_name : expenseName, expense_amount : expenseAmount})
+        axios.post('/api/add-expense',{expense_name : expenseName, expense_amount : expenseAmount,category_type: categoryType})
             .then(response => {
               //  setExpenses(response.data);
 
