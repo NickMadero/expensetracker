@@ -7,6 +7,7 @@ const {storeExpense} = require('./addExpenses')
 const {UpdateExpenseName} = require('./updateExpenseName')
 const {UpdateExpenseAmount} = require("./updateExpenseAmount");
 const {DeleteExpense} = require("./deleteExpenses")
+const {GetCategoryType} = require("./GetCategoryType")
 // initialize the Express app
 const app = express();
 
@@ -53,6 +54,32 @@ app.post('/api/update-Expense-amount', async (req,res) =>{
         res.status(500).json({ success: false, message: 'Error updating expense amount' });
     }
 
+})
+
+app.post('/api/sort-category' , async (req,res) =>{
+const {category_type} = req.body;
+
+    try {
+
+     const NewSortedCategory = await GetCategoryType(category_type);
+     res.send(NewSortedCategory)
+
+    } catch (e){
+        console.error('error')
+    }
+})
+
+app.post('/api/get-category-list', (req, res) => {
+    const getController = "call get_category_list();";
+    dbcontroller.query(getController,  (err, result) => {
+        // console.log(result);
+        // parse the result before sending it to the frontend
+        const unparsedString = result[0][0]["column_type"];
+        // console.log(`Got unparsed string: ${unparsedString}.`);
+        const parsedArray = unparsedString.slice(1, -1).split("','");
+        // console.log(`Parsed string into array: ${parsedArray}`);
+        res.send(parsedArray);
+    })
 })
 
 // this endpoint will just call the stored procedure directly

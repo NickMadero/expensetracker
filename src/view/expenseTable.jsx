@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import HomePage from "./homePage";
-import {Button, CloseButton, FormControl, FormLabel, Modal, Table} from "react-bootstrap";
+import {Button, CloseButton, Dropdown, DropdownButton, FormControl, FormLabel, Modal, Table} from "react-bootstrap";
 import axios from "axios";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
 
 
 function ExpenseTable () {
     const [Expenses, setExpenses] = useState([]);
     const [removeExpenseModal , setremoveExpenseModal]  = useState(false);
-    const [newExpenseName, setnewExpenseName] = useState("");
-    const [newExpenseAmount, setnewExpenseAmount] = useState("");
     const [selectedID , setSelectedID] = useState(null);
+    const [categoryList, setCategoryList] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
         /**
          * todo create function that calls endpoint that will show an expense.
          */
@@ -22,7 +24,24 @@ function ExpenseTable () {
                 .catch(error => {
                     console.log(error);
                 });
+
+            axios.post('/api/get-category-list')
+                .then(response => {
+                    setCategoryList(response.data);
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }, []);
+
+    useEffect(() => {
+        console.log(selectedCategory);
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        console.log(Expenses);
+    }, [Expenses]);
 
     /**
      * handles the change name modal to either open or close when clicked
@@ -39,33 +58,45 @@ function ExpenseTable () {
             })
     }
 
-/*    const UpdateExpenseName  = ( expenseName) =>{
-    console.log( selectedID.expenseID)
-    axios.post('/api/update-Expense-Name', {expense_id : selectedID.expenseID, expense_name : expenseName})
-        .then(response => {
-            console.log( selectedID.expenseID,expenseName)
-        })
-        window.location.reload();
-}
-    const UpdateExpenseAmount  = ( expenseAmount) =>{
-        console.log( selectedID.expenseID)
-        axios.post('/api/update-Expense-amount', {expense_id : selectedID.expenseID, expense_amount : expenseAmount})
-            .then(response => {
-                console.log( selectedID.expenseID,expenseAmount)
-            })
-        window.location.reload();
-    }*/
-
+    const sortCategory = async (selectedCategory) => {
+            try {
+                const response = await axios.post('/api/sort-category',{category_type: selectedCategory});
+               setExpenses(response.data)
+            } catch (e) {
+                console.log(e)
+            }
+    }
+    const handleOptionChange = async (eventKey) => {
+        await setSelectedCategory(eventKey);
+        sortCategory(eventKey);
+    };
 
     return (
         <div>
-        <Table>
+
+
+            <Table>
             <thead>
+
             <tr>
                 <th>Expense Name</th>
                 <th>Expense Amount $$</th>
-                <th>category type</th>
+                <th >category type</th>
+                <FormLabel>Select Category</FormLabel>
+                <Dropdown onSelect={handleOptionChange}>
+                    <Dropdown.Toggle variant="secondary" id="dropdown-category">
+                        Select a category
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        {categoryList.map((category) => (
+                            <Dropdown.Item key={category} eventKey={category}>
+                                {category}
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                </Dropdown>
             </tr>
+
             </thead>
             <tbody>
 
@@ -82,7 +113,6 @@ function ExpenseTable () {
             </tbody>
         </Table>
 
-            {/*this modal handles the change in either Expense name*/}
             <Modal show={removeExpenseModal} onHide={() => setremoveExpenseModal(false)}>
                 <Modal.Title>
                     would you like to remove this expense?
