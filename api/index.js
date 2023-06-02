@@ -8,6 +8,7 @@ const {UpdateExpenseName} = require('./updateExpenseName')
 const {UpdateExpenseAmount} = require("./updateExpenseAmount");
 const {DeleteExpense} = require("./deleteExpenses")
 const {GetCategoryType} = require("./GetCategoryType")
+const {largestAmount} = require('./largestAmount')
 // initialize the Express app
 const app = express();
 
@@ -99,9 +100,23 @@ app.post('/api/show-all-expense',(req,res) =>{
                 categoryID : expenses.category_id
 
             }));
-            res.send(expense)
+            let largest =  largestAmount(expense )
+          const expenselargest = {
+                expense : expense,
+                largest : largest
+            }
+            res.send(expenselargest)
         }
     })
+})
+
+app.post('/api/largest-amount',(req,res) =>{
+
+    try {
+
+    }catch (e) {
+     console.log(e)
+    }
 })
 
 app.post('/api/delete-expense',(req,res) =>{

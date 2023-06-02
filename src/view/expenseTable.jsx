@@ -6,6 +6,7 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 
 
+
 function ExpenseTable () {
     const [Expenses, setExpenses] = useState([]);
     const [removeExpenseModal , setremoveExpenseModal]  = useState(false);
@@ -18,8 +19,8 @@ function ExpenseTable () {
         useEffect(() => {
             axios.post('/api/show-all-expense')
                 .then(response => {
-                    setExpenses(response.data);
-                    console.log(response.data)
+                    setExpenses(response.data.expense)
+                    console.log(response.data.largest)
                 })
                 .catch(error => {
                     console.log(error);
@@ -28,7 +29,7 @@ function ExpenseTable () {
             axios.post('/api/get-category-list')
                 .then(response => {
                     setCategoryList(response.data);
-                    console.log(response.data)
+                   // console.log(response.data)
                 })
                 .catch(error => {
                     console.log(error);
@@ -40,7 +41,8 @@ function ExpenseTable () {
     }, [selectedCategory]);
 
     useEffect(() => {
-        console.log(Expenses);
+      //  console.log( Expenses);
+
     }, [Expenses]);
 
     /**
@@ -70,6 +72,15 @@ function ExpenseTable () {
         await setSelectedCategory(eventKey);
         sortCategory(eventKey);
     };
+/**
+TODO: lets try to make a sort feature for the amount showing the highest amount to the lowest amount
+      first maybe figure out how we can compare the first expense with the next expense
+     then keep comparing till we have the largest.
+    maybe a for loop will help.
+
+    idea for later lets move the function to the backend so we can use the debugger
+ */
+
 
     return (
         <div>
