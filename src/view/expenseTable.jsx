@@ -13,6 +13,7 @@ function ExpenseTable () {
     const [selectedID , setSelectedID] = useState(null);
     const [categoryList, setCategoryList] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [largestAmount , setlargestAmount] = useState([])
         /**
          * todo create function that calls endpoint that will show an expense.
          */
@@ -20,7 +21,7 @@ function ExpenseTable () {
             axios.post('/api/show-all-expense')
                 .then(response => {
                     setExpenses(response.data.expense)
-                    console.log(response.data.largest)
+                     setlargestAmount(response.data.largest)
                 })
                 .catch(error => {
                     console.log(error);
@@ -72,6 +73,10 @@ function ExpenseTable () {
         await setSelectedCategory(eventKey);
         sortCategory(eventKey);
     };
+    const handleLargestChange = async () => {
+        await setExpenses(largestAmount);
+
+    };
 /**
 TODO: lets try to make a sort feature for the amount showing the highest amount to the lowest amount
       first maybe figure out how we can compare the first expense with the next expense
@@ -91,8 +96,8 @@ TODO: lets try to make a sort feature for the amount showing the highest amount 
 
             <tr>
                 <th>Expense Name</th>
-                <th>Expense Amount $$</th>
-                <th >category type</th>
+                <th  style={{ cursor: 'pointer', color:"blue"}} onClick={handleLargestChange}>Expense Amount $$</th>
+                <th>category type</th>
                 <FormLabel>Select Category</FormLabel>
                 <Dropdown onSelect={handleOptionChange}>
                     <Dropdown.Toggle variant="secondary" id="dropdown-category">

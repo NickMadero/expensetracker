@@ -100,7 +100,7 @@ app.post('/api/show-all-expense',(req,res) =>{
                 categoryID : expenses.category_id
 
             }));
-            let largest =  largestAmount(expense )
+            let largest =  largestAmount(expense)
           const expenselargest = {
                 expense : expense,
                 largest : largest
