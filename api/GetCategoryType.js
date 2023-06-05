@@ -1,4 +1,5 @@
 const dbcontroller = require('./dbcontroller')
+const {largestAmount} = require("./largestAmount");
 
 
  function GetCategoryType (category_type) {
@@ -15,8 +16,14 @@ const dbcontroller = require('./dbcontroller')
                      name: sorted.expense_name,
                      amount: sorted.expense_amount,
                      categoryType: sorted.category_type,
+
                  }));
-                 resolve(sortedCategory);
+                 let largest = largestAmount(sortedCategory)
+                 const responseObj = {
+                     sortedCategory: sortedCategory,
+                     largest : largest
+                 }
+                 resolve(responseObj);
              }
          });
      });

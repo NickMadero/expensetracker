@@ -64,7 +64,8 @@ function ExpenseTable () {
     const sortCategory = async (selectedCategory) => {
             try {
                 const response = await axios.post('/api/sort-category',{category_type: selectedCategory});
-               setExpenses(response.data)
+               setExpenses(response.data.sortedCategory)
+                setlargestAmount(response.data.largest)
             } catch (e) {
                 console.log(e)
             }
